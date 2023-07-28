@@ -1,0 +1,139 @@
+kubernetesType: Vanilla  #Vanilla for community kubernetes distribution else Openshift for Openshift
+
+## In case of using these charts on Openshift then please use UBI images
+## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
+nfimage:
+  repository: docker.io/oaisoftwarealliance/oai-smf          # dockerhub oaisoftwarealliance/oai-smf
+  version: develop    #image tag, develop tag for experimental features 
+  #pullPolicy: IfNotPresent or Never or Always
+  pullPolicy: IfNotPresent
+
+# good to use when pulling images from docker-hub mention for RHEL images it can be commented
+imagePullSecrets: 
+  - name: "regcred"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "oai-smf-sa"
+
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+
+#service type is fixed to clusterIP, it is only support for non multus interface (eth0)
+
+# SMF needs two seperate interface one for http and other one for N4 to communicate with UPD. 
+# But for experimentation only one interface can be used. 
+# When you need multus:
+# 1. you want seperate interface for N4 and Nsmf 
+# 2. Your UPF is outside the cluster and the host machine can communicate but pods can not then you can provide ip-address in the same range as your host machine
+# 3. You want static ip-address for N4 interface, Namf can be discovered by its service name
+
+## Change these ip-addresses according to your environment
+multus:
+  ## If you don't want to add a default route in your pod then leave this field empty
+  defaultGateway: ""
+  n4Interface:
+    create: false
+    Ipadd: "192.168.24.3"
+    Netmask: "24"
+    #name inside the pod is hardcoded right now
+    #name: "n4"
+    ## If you do not have a gateway leave the field empty
+    Gateway: ""
+    ## If you do not want to add any routes in your pod then leave this field empty
+    #routes: [{'dst': '10.8.0.0/24','gw': '192.168.24.254'}, {'dst': '10.9.0.0/24','gw': '192.168.24.254'}]
+    hostInterface: "bond0"
+
+config:
+  smfInterfaceNameForN4: "eth0"  # if multus.n4Interface.create is true then n4 else eth0
+  smfInterfaceNameForSBI: "eth0"
+  smfInterfacePortForSBI: 80
+  smfInterfaceHttp2PortForSBI: 8080
+  smfApiVersion: "v1"
+  httpVersion: 1          #default is 1 HTTP1 you can make it 2 HTTP2
+  defaultCSCFIpv4Address: "172.21.6.13" # For IMS server if needed
+  dnsIpv4Address: "8.8.8.8" # configure the dns for UE don't use Kubernetes DNS
+  dnsSecIpv4Address: "172.21.3.100" # configure the dns for UE don't use Kubernetes DNS
+  upfSpgwu: true                    # for vpp upf set it to false
+  discoverUpf: "yes"              # if NRF is used then it can be used for UPF discovery 
+  useLocalSubscriptionInfo: "yes" # If yes ip-allocation will be handled by SMF if no the information will be reterived from UDM
+  useFqdnDns: "yes" # use only when the DNS can resolve FQDN of other network functions
+  useLocalPCCRules: "yes"      # Set to yes if SMF uses local PCC rules instead of from an PCF
+  discoverPcf: "no"            # Set to yes if PCF is used and want to be discovered via NRF
+  ueMtu: 1500
+  registerNrf: "yes" # if wants to use NRF registry and discovery
+  nrfFqdn: "oai-nrf-svc" # configure if NRF can be reached using Kubernetes service
+  udmFqdn: "oai-udm-svc" #Will be used only if useLocalSubscriptionInfo set to yes meaning subscriber information will be fetched from database
+  amfFqdn: "oai-amf-svc" 
+  # slicing parameter defining one slice is mandatory, if you want to have multiple just copy the below structure and add 1,2 or 3. 
+  # You can define maximum 4 slices from here in case of more please change the configuration file. 
+  dnnNi0: "oai"
+  pdusessiontype0: "IPv4"
+  ipv4dnnRange0: "12.1.1.2 - 12.1.1.254"
+  nssaiSst0: 1
+  nssaiSd0: "0xFFFFFF"
+  qosProfile5qi0: 2
+  sessionAmbrUl0: "1000Mbps"
+  sessionAmbrDl0: "1000Mbps"
+  # Extra optional slice
+  dnnNi1: "ims"
+  pdusessiontype1: "IPv4v6"
+  ipv4dnnRange1: "12.2.1.41 - 12.2.1.254"
+  nssaiSst1: 1
+  nssaiSd1: "0xFFFFFF"
+  qosProfile5qi1: 1
+  sessionAmbrUl1: "1000Mbps"
+  sessionAmbrDl1: "1000Mbps"
+
+
+## Debugging section
+start:
+  smf: true #If false the network function container will run in sleep mode for manually testing
+  tcpdump: true
+
+includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
+
+## For openshift you can use rhel8/support-tools:8.7-13
+tcpdumpimage:
+   repository: docker.io/corfr/tcpdump
+   version: latest
+   #pullPolicy: IfNotPresent or Never or Always
+   pullPolicy: IfNotPresent
+
+#To store PCAP of NF in a sharedVolume so it can be easily fetched (PVC is created with NRF charts so make sure in NRF it is true)
+persistent:
+   sharedvolume: true
+
+## NF is the network function and tcpdump is the tcpdump container. 
+## To know more about request and limit it is better to understand that how Kubernetes QoS works. 
+## https://kubernetes.io/docs/concepts/configuration/manage-resources-containers
+## https://kubernetes.io/docs/concepts/workloads/pods/pod-qos
+
+resources:
+  define: true
+  limits:
+    tcpdump:
+      cpu: 200m
+      memory: 512Mi
+    nf:
+      cpu: 200m
+      memory: 512Mi
+  requests:
+    tcpdump:
+      cpu: 200m
+      memory: 512Mi
+    nf:
+      cpu: 200m
+      memory: 512Mi
+
+readinessProbe: true
+
+livenessProbe: false
+
+terminationGracePeriodSeconds: 5
+
+nodeName:

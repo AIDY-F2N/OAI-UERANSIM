@@ -1,0 +1,27 @@
+dependencies:
+- name: mysql
+  repository: file://../mysql
+  version: 8.0.31
+- name: oai-nrf
+  repository: file://../oai-nrf
+  version: v1.5.1
+- name: oai-udr
+  repository: file://../oai-udr
+  version: v1.5.1
+- name: oai-udm
+  repository: file://../oai-udm
+  version: v1.5.1
+- name: oai-ausf
+  repository: file://../oai-ausf
+  version: v1.5.1
+- name: oai-amf
+  repository: file://../oai-amf
+  version: v1.5.1
+- name: oai-smf
+  repository: file://../oai-smf
+  version: v1.5.1
+- name: oai-spgwu-tiny
+  repository: file://../oai-spgwu-tiny
+  version: v1.5.1
+digest: sha256:72ab991acf26e297c14ca473ea76d6a8183519288631aba5ea5169da5075aee3
+generated: "2023-07-18T17:20:09.632601744+02:00"
