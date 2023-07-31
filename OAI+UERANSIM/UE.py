@@ -56,7 +56,7 @@ def ue_UERANSIM (command):
   sim["uesimtun"]=uesimtun[1]
   sim["ip"]=ip
   sim["child"]=child.pid
-  filesim = open('sim.txt', 'w+')
+  filesim = open('text_files/sim.txt', 'w+')
   filesim.write(json.dumps(sim))
   filesim.close()
   del(sim)

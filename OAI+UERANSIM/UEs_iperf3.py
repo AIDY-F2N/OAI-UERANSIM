@@ -63,7 +63,7 @@ if (retour.count('Running')==nb_pods):
         while (i<number_of_UEs):  
             slice["ok"][i]=0
             sim["a"]="0"
-            filesim = open('sim.txt', 'w+')
+            filesim = open('text_files/sim.txt', 'w+')
             filesim.write(json.dumps(sim))
             filesim.close()
             start=time.time()
@@ -72,7 +72,7 @@ if (retour.count('Running')==nb_pods):
             time.sleep(1)
             while ((end-start)<20 and sim["a"]=="0"):
                 try:
-                    filesim = open('sim.txt', 'r')
+                    filesim = open('text_files/sim.txt', 'r')
                     sim = json.loads(filesim.read())
                     filesim.close()
                 except Exception as e: 
@@ -93,41 +93,27 @@ if (retour.count('Running')==nb_pods):
         while (i < number_of_UEs):
             if (slice["ok"][i]==1):  
                 port=port+1
-                #slice["iperf_processus"][i]=subprocess.Popen(['./UERANSIM/build/nr-binder', str(slice["ip"][i]) ,'iperf3 -c', str(ip2),"-p",str(port),"-i 1 -t",str(1)])
-                slice["iperf_processus"][i]=subprocess.Popen('exec ./UERANSIM/build/nr-binder '+ str(slice["ip"][i]) + ' iperf3 -c '+ str(ip2)+ ' -p '+str(port)+' -i 1 -t '+str(1)+" 2>&1 | tee pp.txt",shell = True, stdout = subprocess.PIPE, encoding = 'ascii')
+                slice["iperf_processus"][i]=subprocess.Popen('exec ./UERANSIM/build/nr-binder '+ str(slice["ip"][i]) + ' iperf3 -c '+ str(ip2)+ ' -p '+str(port)+' -i 1 -t '+str(1)+" 2>&1 | tee text_files/iperf3.txt",shell = True, stdout = subprocess.PIPE, encoding = 'ascii')
                 output = slice["iperf_processus"][i].communicate()[0]
-                with open('pp.txt', 'r') as f:
+                with open('text_files/iperf3.txt', 'r') as f:
                     last_line = f.readlines()[-1]
                 while ("refused" in last_line):
                     print("killll")
                     os.system("sudo pkill -9 -P " + str(slice["iperf_processus"][i].pid))#kill ping process
                     port=port+1
-                    slice["iperf_processus"][i]=subprocess.Popen('exec ./UERANSIM/build/nr-binder '+ str(slice["ip"][i]) + ' iperf3 -c '+ str(ip2)+ ' -p '+str(port)+' -i 1 -t '+str(1)+" 2>&1 | tee pp.txt",shell = True, stdout = subprocess.PIPE, encoding = 'ascii')
+                    slice["iperf_processus"][i]=subprocess.Popen('exec ./UERANSIM/build/nr-binder '+ str(slice["ip"][i]) + ' iperf3 -c '+ str(ip2)+ ' -p '+str(port)+' -i 1 -t '+str(1)+" 2>&1 | tee text_files/iperf3.txt",shell = True, stdout = subprocess.PIPE, encoding = 'ascii')
                     output = slice["iperf_processus"][i].communicate()[0]
                     os.system("sudo pkill -9 -P " + str(slice["iperf_processus"][i].pid))#kill ping process
-                    with open('pp.txt', 'r') as f:
+                    with open('text_files/iperf3.txt', 'r') as f:
                         last_line = f.readlines()[-1]
                 slice["iperf_processus"][i]=subprocess.Popen('exec ./UERANSIM/build/nr-binder '+ str(slice["ip"][i]) + ' iperf3 -c '+ str(ip2)+ ' -p '+str(port)+' -i 1 -t '+str(seconds),shell = True, stdout = subprocess.PIPE, encoding = 'ascii')
-                """output = slice["iperf_processus"][i].communicate()[0]
-                if ("refused" in output):
-                    print("killll")
-                    os.system("sudo pkill -9 -P " + str(slice["iperf_processus"][i].pid))#kill ping process
-                    ppp="sudo kill -9 $(sudo lsof -t -i:"+ str(port)+ ")"
-                    try:
-                        p = subprocess.Popen(ppp,shell=True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    except:
-                        pass
-                    p.kill()"""
-                    #slice["iperf_processus"][i]=subprocess.Popen('exec ./UERANSIM/build/nr-binder '+ str(slice["ip"][i]) + ' iperf3 -c '+ str(ip2)+ ' -p '+str(port)+' -i 1 -t '+str(seconds),shell = True, stdout = subprocess.PIPE, encoding = 'ascii')
             i=i+1           
-        time.sleep(seconds+60)
+        time.sleep(seconds+number_of_UEs)
         for i in range(0,number_of_UEs):
             os.system("sudo pkill -9 -P " + str(slice["child"][i]))#kill ue process
             slice["processus"][i].kill()
             os.system("sudo pkill -9 -P " + str(slice["iperf_processus"][i].pid))#kill ping process
 
-file1 = open("go.txt","w")
+file1 = open("text_files/go.txt","w")
 file1.write("1")
 file1.close()
-
-
