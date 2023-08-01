@@ -46,13 +46,13 @@ Please note that this tutorial focuses on the Linux Ubuntu 64-bit operating syst
 
 
 
- ## Pre-requisite
+ # Pre-requisite
 - Tested on Ubuntu 20.04
 - 8CPU and 16GB of RAM
 
 
 
-# Install Docker:
+## Install Docker:
  You can install Docker Engine following the steps given in: https://docs.docker.com/engine/install/ubuntu/
 
 - Test Docker using "docker ps". The "docker ps" command is used to list the running Docker containers on your system. When you run docker ps without any additional options, it displays a list of the currently running containers along with their details, such as the container ID, image name, status, ports, and names. 
@@ -70,10 +70,10 @@ Please note that this tutorial focuses on the Linux Ubuntu 64-bit operating syst
 - The Docker daemon runs as a system service and manages the Docker containers and images on your system. By default, the Docker daemon socket (located at /var/run/docker.sock) has restricted access permissions to ensure the security and integrity of the Docker environment. 
 - By adding the user to the "docker" group and activating the new group membership, you grant the user the necessary permissions to access the Docker daemon socket (/var/run/docker.sock). This allows the user to execute Docker commands without encountering the "permission denied" error.
 
-# Installing kubeadm, kubelet and kubectl
+## Installing kubeadm, kubelet and kubectl
 The components kubeadm, kubelet, and kubectl are essential for the operation of a Kubernetes (K8s) cluster. You can install kubeadm, kubelet and kubectl following the steps given in: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
-## Build a K8S cluster
+# Build a K8S cluster
 
 A Kubernetes cluster comprises multiple machines called nodes, where each node serves a specific purpose in running and managing containers. The cluster includes a control plane responsible for maintaining the cluster's overall state and orchestrating tasks.
 
@@ -209,7 +209,7 @@ To untaint the master node, you can use the kubectl taint command. Here's an exa
 
 
 
-## OAI core script
+# OAI core script
 
 
 Now, we present the different steps to install the OAI core script. 
@@ -259,7 +259,7 @@ kubectl get pods -n oai
 
 
 
-## UERANSIM
+# UERANSIM
 
 
 UERANSIM stands for User Equipment (UE) Radio Access Network (RAN) Simulator. It is an open-source software tool developed by the OpenAirInterface (OAI) community. UERANSIM simulates the behavior of a 5G RAN, specifically the functions of a UE and the radio access network. UERANSIM allows users to emulate the behavior of 5G UEs, including mobility, radio resource management, connection establishment, and data transfer. It provides a realistic environment for testing and evaluating the performance of 5G networks and applications. In the following steps, we clone UERANSIM for the git repository.
@@ -335,7 +335,7 @@ ping -c 3 -I uesimtun0 google.com
 
  
 
-## Setup Prometheus Monitoring
+# Setup Prometheus Monitoring
 
 In this phase, we set up Prometheus on our Kubernetes cluster. This setup collects node, pods, and service metrics automatically using Prometheus service discovery configurations. Prometheus is a high-scalable open-source monitoring framework. It provides out-of-the-box monitoring capabilities for the Kubernetes container orchestration platform. Also, In the observability space, it is gaining huge popularity as it helps with metrics and alerts.
 
@@ -399,7 +399,7 @@ kubectl get pods --namespace=monitoring
 
 
 
-## Setup Kube State Metrics on Kubernetes
+# Setup Kube State Metrics on Kubernetes
 Kube State metrics is a service that talks to the Kubernetes API server to get all the details about all the API objects like deployments, pods, daemonsets, Statefulsets, etc. Primarily it produces metrics in Prometheus format with the stability as the Kubernetes API. Overall it provides kubernetes objects \& resources metrics that you cannot get directly from native Kubernetes monitoring components.
 
 Kube state metrics is available as a public docker image. Use the following command to deploy the following Kubernetes objects needed for Kube state metrics to work. It deploys a Service Account, a Cluster Role for kube state metrics to access all the Kubernetes API objects, a Cluster Role Binding and a Kube State Metrics Deployment Service To expose the metrics. 
@@ -420,7 +420,7 @@ kubectl get deployments kube-state-metrics -n kube-system
 
 
 
-## Setting Up Grafana
+# Setting Up Grafana
 Grafana is an open-source lightweight dashboard tool. It can be integrated with many data sources like Prometheus, AWS cloud watch, Stackdriver, etc. Using Grafana you can simplify Kubernetes monitoring dashboards from Prometheus metrics.  All the needed files are in the kubernetes-grafana folder.
 
 
@@ -497,7 +497,7 @@ Pass: admin
 
 
 
-## Generate traffic using iPerf3
+# Generate traffic using iPerf3
  iPerf3 is a tool for performing network throughput measurements.  It can test TCP, UDP, or SCTP throughput.  To perform an iPerf3 test the user must establish both a  server  and  a client.  The iPerf3 executable contains both client and server functionality. To install  and test iPerf3 on Ubuntu, follow the link https://linuxhint.com/install-iperf3-ubuntu/ (optional).
 
 
