@@ -173,7 +173,7 @@ kubectl get nodes
 
 
 <div align="center">
-    <img src="figures/nodes.png" alt="AIDY-F2N">
+    <img src="figures/nodess.png" alt="AIDY-F2N">
 </div>
 
 
