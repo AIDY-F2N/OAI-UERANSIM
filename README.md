@@ -7,7 +7,7 @@
 
 ## Description
 
-This documentation provides a comprehensive guide to building a Kubernetes (K8s) cluster and configuring the OAI 5G core network on it. The tutorial outlines the step-by-step process, starting with the installation of Docker, followed by the setup of kubeadm, kubelet, and kubectl, and concludes with the construction of the K8s cluster. Additionally, we demonstrate how to deploy OpenAirInterface (OAI) core network, and link and use UERANSIM  (gNB and User equipment (UE)). 
+This documentation offers a comprehensive guide to building a Kubernetes (K8s) cluster and configuring the OAI 5G core network on it. The tutorial outlines a step-by-step process, beginning with Docker installation, followed by setting up kubeadm, kubelet, and kubectl, and concluding with constructing the K8s cluster. Moreover, it demonstrates how to deploy OpenAirInterface (OAI) core network, and link and utilize UERANSIM (gNB and User Equipment (UE)). 
 
 Docker plays a crucial role in both the general containerization space and the specific domains of K8s and 5G. It facilitates the creation and management of lightweight, isolated containers, allowing for efficient application deployment and scalability. Within the context of K8s, Docker is instrumental in packaging and running applications as containers, which can then be orchestrated by K8s across the cluster. K8s is an open-source container orchestration platform that simplifies the management and deployment of containerized applications at scale. 
 
