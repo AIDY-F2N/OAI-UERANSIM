@@ -1,4 +1,4 @@
-# AIDY-F2N
+# OpenAirInterface 5G Core Network Deployment on a Kubernetes (K8s) cluster and Testing with UERANSIM and Iperf3 for traffic generation
 
 <div align="center">
     <img src="figures/1_IconsAll_Hori.png" alt="AIDY-F2N">
