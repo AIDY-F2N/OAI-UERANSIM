@@ -24,7 +24,7 @@ Please note that this tutorial focuses on the Linux Ubuntu 64-bit operating syst
 
 ## Contributors
 
-- Massinissa AIT ABA, massinissa.ait-aba@davidson.fr/massinissa.aitaba@gmail.com
+- Massinissa AIT ABA, massinissa.ait-aba@davidson.fr
 - Ali AL KHANSA, ali.al_khansa@telecom-sudparis.eu
 
 ## Table of Contents
@@ -169,7 +169,7 @@ kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Doc
 kubectl get nodes
 ```
 
- We get the following result, where the name of our node is aitaba, the statut is "Ready", it indicates that the node is ready to receive workloads (otherwise wait few seconds, ruen again "kubectl get nodes", if it is still not ready, use "kubectl describe pod &lt;node-name&gt; to figure out what is the problem), "control-plane" indicates that it is a master node, and "v1.27.1" is the version of Kubernetes that it is running. The "AGE" column indicates how long the node has been running.
+ We get the following result, where the name of our node is "dav8m2g-hp-elitebook-840-g6", the statut is "Ready", it indicates that the node is ready to receive workloads (otherwise wait few seconds, ruen again "kubectl get nodes", if it is still not ready, use "kubectl describe pod &lt;node-name&gt; to figure out what is the problem), "control-plane" indicates that it is a master node, and "v1.27.1" is the version of Kubernetes that it is running. The "AGE" column indicates how long the node has been running.
 
 
 <div align="center">
