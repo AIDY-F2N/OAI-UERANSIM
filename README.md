@@ -240,7 +240,7 @@ git clone https://github.com/k8snetworkplumbingwg/multus-cni.git
     ```
 5. Clone the following repository:
 ```bash[language=bash]
-git clone git@github.com:AIDY-F2N/OAI-UERANSIM.git
+git clone https://github.com/AIDY-F2N/OAI-UERANSIM.git
 ```
 6. Open a terminal inside the folder "OAI-UERANSIM/OAI+UERANSIM", and run the following commands to deploy the OAI core:
 ```bash[language=bash]
