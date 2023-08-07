@@ -274,7 +274,7 @@ git clone https://github.com/aligungr/UERANSIM.git
 2. Install UERANSIM following this link : https://github.com/aligungr/UERANSIM/wiki/Installation. Pay attention to do it in the "OAI-UERANSIM/OAI+UERANSIM/UERANSIM" folder.
 
 
-3. Update the UERANSIM files configuration using the following command (be sure that all pods of the core network are deployed, 180 seconds in average):
+3. Go back to the folder of "OAI+UERANSIM" and update the UERANSIM files configuration using the following command (be sure that all pods of the core network are deployed, 180 seconds in average):
 
 ```bash[language=bash]
 python3 update_UERANSIM.py
@@ -392,17 +392,17 @@ kubectl get pods --namespace=monitoring
 4. Exposing Prometheus as a Service [NodePort \& LoadBalancer]: To access the Prometheus dashboard over a IP or a DNS name, you need to expose it as a Kubernetes service.The annotations in the service YAML given by "prometheus-service.yaml" makes sure that the service endpoint is scrapped by Prometheus. The prometheus.io/port should always be the target port mentioned in service YAML.
 
 - Create the service using the following command:
-        ```bash[language=bash]
-        kubectl create -f prometheus-service.yaml --namespace=monitoring
-        ```
-
+    
+```bash[language=bash]
+kubectl create -f prometheus-service.yaml --namespace=monitoring
+```
 
 
 
 # Setup Kube State Metrics on Kubernetes
 Kube State metrics is a service that talks to the Kubernetes API server to get all the details about all the API objects like deployments, pods, daemonsets, Statefulsets, etc. Primarily it produces metrics in Prometheus format with the stability as the Kubernetes API. Overall it provides kubernetes objects \& resources metrics that you cannot get directly from native Kubernetes monitoring components.
 
-Kube state metrics is available as a public docker image. Use the following command to deploy the following Kubernetes objects needed for Kube state metrics to work. It deploys a Service Account, a Cluster Role for kube state metrics to access all the Kubernetes API objects, a Cluster Role Binding and a Kube State Metrics Deployment Service To expose the metrics. 
+Kube state metrics is available as a public docker image.  In the "OAI-UERANSIM" folder, use the following command to deploy the following Kubernetes objects needed for Kube state metrics to work. It deploys a Service Account, a Cluster Role for kube state metrics to access all the Kubernetes API objects, a Cluster Role Binding and a Kube State Metrics Deployment Service to expose the metrics. 
 
 ```bash[language=bash]
 kubectl apply -f kube-state-metrics-configs/
