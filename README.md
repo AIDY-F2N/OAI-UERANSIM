@@ -29,7 +29,6 @@ Please note that this tutorial focuses on the Linux Ubuntu 64-bit operating syst
 
 ## Table of Contents
 
-- [Installation](#installation)
 - [Pre-requisite](#pre-requisite)
 - [Build a K8S cluster](#build-a-k8s-cluster)
 - [OAI core script](#oai-core-script)
