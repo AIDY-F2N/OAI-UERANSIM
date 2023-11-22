@@ -22,6 +22,7 @@ In addition, we connect the code of UERANSIM simulator (https://github.com/aligu
 
 Please note that this tutorial focuses on the Linux Ubuntu 64-bit operating system. While the overall concepts remain applicable, some specific steps may vary for other operating systems.
 
+The tutorial video is available on youtube: https://www.youtube.com/playlist?list=PLu0ii58C1Y3vNpRMZwYCsb17PvyF-i4WU
 ## Contributors
 
 - Massinissa AIT ABA, massinissa.ait-aba@davidson.fr
