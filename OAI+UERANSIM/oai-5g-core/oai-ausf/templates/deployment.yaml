@@ -14,10 +14,8 @@ spec:
   template:
     metadata:
       labels:
-        schedulingStrategy: meetup
         id: "{{ .Values.id }}" #"1" #1/2
-        slice_sst: "{{ .Values.slice_sst }}" #"3" #EMBB
-        slice_sd: "{{ .Values.slice_sd }}" #"5" #Slice differentiator
+        app_ad: "{{ .Values.app_ad }}" #"5" #Slice differentiator
         nb_pods: "{{ .Values.nb_pods }}" #"2" #number of pods in the slice
         {{- include "oai-ausf.selectorLabels" . | nindent 8 }}
     spec:
@@ -27,6 +25,23 @@ spec:
       imagePullSecrets:
         {{ toYaml .Values.imagePullSecrets | indent 8 }}
     {{- end }}
+    {{- if .Values.global }}{{ if .Values.global.waitForNRF }}
+      initContainers:
+        - name: init
+          image: docker.io/oaisoftwarealliance/oai-tcpdump-init:alpine-3.20
+          imagePullPolicy: IfNotPresent
+          command: 
+            - /bin/sh
+            - -c
+            - until curl --connect-timeout {{ .Values.global.timeout }} --head -X GET http://oai-nrf/nnrf-nfm/v1/nf-instances?nf-type='NRF' {{ .Values.global.http2Param }}; do echo waiting for oai-nrf; sleep 1; done
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 1m
+            limits:
+              memory: 50Mi
+              cpu: 1m
+    {{- end }}{{ end }}
       containers:
     {{- if .Values.includeTcpDumpContainer }}
       - name: tcpdump
@@ -52,7 +67,7 @@ spec:
         command:
           - /bin/sh
           - -c
-          - /usr/sbin/tcpdump -i any -w /tmp/pcap/{{ .Chart.Name }}_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
+          - /usr/bin/tcpdump -i any -w /tmp/pcap/{{ .Chart.Name }}_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
         {{- else}}
         command:
           - /bin/sleep
@@ -68,6 +83,9 @@ spec:
     {{- end }}
       - name: ausf
         image: "{{ .Values.nfimage.repository }}:{{ .Values.nfimage.version }}"
+        volumeMounts:
+          - mountPath: /openair-ausf/etc
+            name: configuration
         imagePullPolicy: {{ .Values.nfimage.pullPolicy }}
         {{- if .Values.resources.define}}
         resources:
@@ -97,116 +115,30 @@ spec:
           periodSeconds: 5
         {{- end}}
         ports:
-        - containerPort: {{ .Values.config.sbiPortHttp1 }}
-          name: http1
-        - containerPort: {{ .Values.config.sbiPortHttp2 }}
-          name: http2
+        - containerPort: {{ .Values.exposedPorts.sbi }}
+          name: http
         {{- if .Values.start.ausf}}
         {{- else}}
         command:
           - /bin/sleep
           - infinity
         {{- end}}
-        env:
-          - name: TZ
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: tz     
-          - name: INSTANCE_ID
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: instanceId
-          - name: PID_DIR
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: pidDirectory
-          - name: AUSF_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: ausfName
-          - name: LOG_LEVEL
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: logLevel
-          - name: SBI_IF_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: sbiIfName
-          - name: SBI_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: sbiPortHttp1
-          - name: SBI_HTTP2_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: sbiPortHttp2
-          - name: USE_HTTP2
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: useHttp2
-          - name: USE_FQDN_DNS
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: useFqdnDns
-          - name: UDM_IP_ADDRESS
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: udmIpAddress
-          - name: UDM_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: udmPort
-          - name: UDM_VERSION_NB
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: udmVersionNb
-          - name: UDM_FQDN
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: udmFqdn
-          - name: NRF_IP_ADDRESS
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: nrfIpAddress
-          - name: NRF_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: nrfPort
-          - name: NRF_API_VERSION
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: nrfApiVersion
-          - name: NRF_FQDN
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-configmap
-                key: nrfFqdn
         {{- if .Values.start.ausf}}
         {{- else}}
         command:
           - /bin/sleep
           - infinity
         {{- end}}
+      volumes:
+      - configMap:
+      {{- if .Values.global }}
+          name: {{ .Values.global.coreNetworkConfigMap }}
+      {{- else }}
+          name: {{ .Chart.Name }}-configmap
+      {{- end }}
+        name: configuration
       {{- if .Values.includeTcpDumpContainer}}
       {{- if .Values.persistent.sharedvolume}}
-      volumes:
       - name: cn5g-pvc
         persistentVolumeClaim:
           claimName: cn5g-pvc
@@ -215,7 +147,7 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: "{{ .Values.schedulerName }}"
-      serviceAccountName: {{ .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Chart.Name }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- if .Values.nodeSelector}}
       nodeSelector: 

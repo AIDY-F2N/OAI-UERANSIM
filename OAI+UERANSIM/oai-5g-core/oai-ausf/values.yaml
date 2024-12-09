@@ -1,16 +1,16 @@
-kubernetesType: Vanilla  #Vanilla for community kubernetes distribution else Openshift for Openshift
+kubernetesDistribution: Vanilla  #Vanilla for community kubernetes distribution else Openshift for Openshift
 
 ## In case of using these charts on Openshift then please use UBI images
 ## To know more about them follow this tutorial https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/tree/master/openshift
 nfimage:
   repository: docker.io/oaisoftwarealliance/oai-ausf   ## oaisoftwarealliance/oai-ausf # image name either locally present or in a public/private repository
-  version: develop       #image tag, develop tag for experimental features 
+  version: v2.1.0       #image tag, develop tag for experimental features 
   #pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
 ## good to use when pulling images from docker-hub mention 
-imagePullSecrets: 
-  - name: "regcred"
+# imagePullSecrets: 
+#   - name: "regcred"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -21,32 +21,14 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: "oai-ausf-sa"
 
+exposedPorts:
+  sbi: 80
+
 #service type is fixed to clusterIP, it is only support for non multus interface (eth0)
 
 podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
-
-config:
-  tz: "Europe/Paris"
-  instanceId: "0"
-  pidDirectory: "/var/run"
-  logLevel: "debug"
-  ausfName: "OAI_AUSF"
-  sbiIfName: "eth0"
-  sbiPortHttp1: "80"
-  sbiPortHttp2: "8080"
-  useHttp2: "no"          #If set to yes then HTTP2 will be used to talk to every other network function and HTTP server will be started
-  useFqdnDns: "yes"
-  udmIpAddress: "127.0.0.1"
-  udmPort: "80"
-  udmVersionNb: "v1"
-  udmFqdn: "oai-udm-svc"
-  nrfIpAddress: "127.0.0.1"
-  nrfPort: "80"
-  nrfApiVersion: "v1"
-  nrfFqdn: "oai-nrf-svc"
-  registerNrf: "no"
 
 ## Debugging section
 start:
@@ -55,10 +37,9 @@ start:
 
 includeTcpDumpContainer: false #If true it will add a tcpdump container inside network function pod for debugging
 
-## For openshift you can use rhel8/support-tools:8.7-13
 tcpdumpimage:
-  repository: docker.io/corfr/tcpdump
-  version: latest   
+  repository: docker.io/oaisoftwarealliance/oai-tcpdump-init
+  version: alpine-3.20
   #pullPolicy: IfNotPresent or Never or Always
   pullPolicy: IfNotPresent
 
@@ -71,29 +52,38 @@ persistent:
 ## To know more about request and limit it is better to understand that how Kubernetes QoS works. 
 ## https://kubernetes.io/docs/concepts/configuration/manage-resources-containers
 ## https://kubernetes.io/docs/concepts/workloads/pods/pod-qos
-
-
 resources:
-  define: true
+  define: false
   limits:
-    tcpdump:
-      cpu: 600m
-      memory: 512Mi
     nf:
-      cpu: 600m
-      memory: 512Mi
+      cpu: 100m
+      memory: 128Mi
+    #If tcpdump container is disabled this value will not be used
+    tcpdump:
+      cpu: 100m
+      memory: 128Mi
   requests:
-    tcpdump:
-      cpu: 600m
-      memory: 512Mi
     nf:
-      cpu: 600m
-      memory: 512Mi
+      cpu: 100m
+      memory: 128Mi
+    #If tcpdump container is disabled this value will not be used
+    tcpdump:
+      cpu: 100m
+      memory: 128Mi
 
 readinessProbe: true
 
 livenessProbe: false
 
 terminationGracePeriodSeconds: 5
+
+nodeSelector: {}
+#schedulerName: setpodnet-scheduler
+id: "1" 
+app_ad: "2" #Slice differentiator
+nb_pods: "10"
+
+#nodeSelector:
+  #site: grenoble
 
 nodeName:

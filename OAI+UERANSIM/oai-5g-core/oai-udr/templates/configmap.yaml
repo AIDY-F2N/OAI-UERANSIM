@@ -1,8 +1,8 @@
+{{- if not .Values.global }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Chart.Name }}-configmap
 data:
-  {{- range $key, $val := .Values.config }}
-  {{ $key }}: {{ $val | quote }}
-  {{- end }}
+  {{ (.Files.Glob "config.yaml").AsConfig | indent 2 | trim }}
+{{- end }}

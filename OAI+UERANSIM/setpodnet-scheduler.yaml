@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: setpodnet-scheduler
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: namespace-creator
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["create","delete"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["create","delete"]
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get","list"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["patch"]
+- apiGroups: [""]
+  resources: ["persistentvolumes"]
+  verbs: ["patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: namespace-creator-binding
+subjects:
+- kind: ServiceAccount
+  name: setpodnet-scheduler
+  namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: namespace-creator
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: setpodnet-scheduler-as-kube-scheduler
+subjects:
+- kind: ServiceAccount
+  name: setpodnet-scheduler
+  namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: system:kube-scheduler
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: qperf
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: qperf
+  name: qperf-creator
+rules:
+- apiGroups: ["apps"]
+  resources: ["daemonsets"]
+  verbs: ["create","delete"]
+- apiGroups: ["apps"]
+  resources: ["daemonsets/status"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["pods/exec","pods"]
+  verbs: ["get","list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: qperf-creator-binding
+  namespace: qperf
+subjects:
+- kind: ServiceAccount
+  name: setpodnet-scheduler
+  namespace: kube-system
+roleRef:
+  kind: Role
+  name: qperf-creator
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: scheduler
+    tier: control-plane
+  name: setpodnet-scheduler
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: scheduler
+      tier: control-plane
+  template:
+    metadata:
+      labels:
+        component: scheduler
+        tier: control-plane
+    spec:
+      serviceAccountName: setpodnet-scheduler
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      containers:
+      - image: docker.io/maitaba/setpodnet:v1.0
+        name: setpodnet-scheduler
+        imagePullPolicy: Always
+

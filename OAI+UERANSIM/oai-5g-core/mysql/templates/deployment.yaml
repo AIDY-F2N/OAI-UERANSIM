@@ -4,7 +4,7 @@ metadata:
   name: {{ template "mysql.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "mysql.fullname" . }}
+    app.kubernetes.io/name: {{ template "mysql.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -18,17 +18,15 @@ spec:
 {{ toYaml .Values.strategy | indent 4 }}
   selector:
     matchLabels:
-      app: {{ template "mysql.fullname" . }}
+      app.kubernetes.io/name: {{ template "mysql.fullname" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        schedulingStrategy: meetup
         id: "{{ .Values.id }}" #"1" #1/2
-        slice_sst: "{{ .Values.slice_sst }}" #"3" #EMBB
-        slice_sd: "{{ .Values.slice_sd }}" #"5" #Slice differentiator
+        app_ad: "{{ .Values.app_ad }}" #"5" #Slice differentiator
         nb_pods: "{{ .Values.nb_pods }}" #"2" #number of pods in the slice
-        app: {{ template "mysql.fullname" . }}
+        app.kubernetes.io/name: {{ template "mysql.fullname" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
 {{- with .Values.podLabels }}
 {{ toYaml . | indent 8 }}

@@ -2,7 +2,7 @@
 ## ref: https://hub.docker.com/r/library/mysql/tags/
 ##
 image: "docker.io/mysql"
-imageTag: "5.7"
+imageTag: "9.0.1"
 
 replicas: 1
 
@@ -79,8 +79,8 @@ imagePullSecrets:
 
 ## Node selector
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
-
-
+#nodeSelector:
+#  env: dev
 
 ## Affinity
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -123,6 +123,14 @@ persistence:
 ## Use an alternate scheduler, e.g. "stork".
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
 ##
+# schedulerName:
+#schedulerName: setpodnet-scheduler
+id: "1" 
+app_ad: "2" #Slice differentiator
+nb_pods: "10"
+
+#nodeSelector:
+  #site: grenoble
 
 
 ## Security context
@@ -231,7 +239,6 @@ podLabels: {}
 
 ## Set pod priorityClassName
 # priorityClassName: {}
-
 
 
 ## Init container resources defaults
