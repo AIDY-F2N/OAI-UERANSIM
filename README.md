@@ -635,28 +635,6 @@ iperf3 pod acts as server which is listening to 100 ports from 5201 to 5301. By 
 python3 lunch_sim.py
 ```
 
-Doing this on our cluster composed of only one machine, we get the following result: 
-
-<div align="center">
-    <img src="figures/Memory and CPU usage.png" alt="Memory and CPU usage">
-</div>
-
-<div align="center">
-    <img src="figures/amf.png" alt="CPU usage for amf pod">
-</div>
-
-<div align="center">
-    <img src="figures/ausf.png" alt="CPU usage for ausf pod">
-</div>
-
-<div align="center">
-    <img src="figures/spgwu.png" alt="CPU usage for spgwu pod">
-</div>
-
-<div align="center">
-    <img src="figures/allPods.png" alt="CPU usage for all pods">
-</div>
-
 
 
 
