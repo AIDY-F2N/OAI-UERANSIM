@@ -49,7 +49,7 @@ The tutorial video is available on youtube: https://www.youtube.com/playlist?lis
 
  # Pre-requisite
 - Tested on Ubuntu 20.04
-- 8CPU and 16GB of RAM
+- 8 CPU and 16GB of RAM
 
 
 
@@ -348,11 +348,16 @@ UERANSIM stands for User Equipment (UE) Radio Access Network (RAN) Simulator. It
 
 
 
-1.  Inside the "OAI-UERANSIM/OAI+UERANSIM" folder, clone the git repository of UERANSIM:
+1.  Inside the "OAI-UERANSIM/OAI+UERANSIM" folder, download UERANSIM v3.2.6 (https://github.com/aligungr/UERANSIM/releases):
 ```bash[language=bash]
-git clone https://github.com/aligungr/UERANSIM.git
+wget https://github.com/aligungr/UERANSIM/archive/refs/tags/v3.2.6.tar.gz
+tar -xvzf v3.2.6.tar.gz
+mv  UERANSIM-3.2.6/ UERANSIM
+rm v3.2.6.tar.gz
+cd UERANSIM/
 ```
-2. Install UERANSIM following this link : https://github.com/aligungr/UERANSIM/wiki/Installation. Pay attention to do it in the "OAI-UERANSIM/OAI+UERANSIM/UERANSIM" folder.
+
+2. Install UERANSIM v3.2.6 following this link : https://github.com/aligungr/UERANSIM/wiki/Installation. Pay attention to do it in the "OAI-UERANSIM/OAI+UERANSIM/UERANSIM" folder.
 
 
 3. Go back to the folder of "OAI+UERANSIM" and update the UERANSIM files configuration using the following command (be sure that all pods of the core network are deployed, 180 seconds in average):
