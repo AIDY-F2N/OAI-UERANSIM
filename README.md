@@ -4,7 +4,6 @@
     <img src="figures/1_IconsAll_Hori.png" alt="AIDY-F2N">
 </div>
 
-
 ## Description
 
 This documentation offers a comprehensive guide to building a Kubernetes (K8s) cluster and configuring the OAI 5G core network on it. The tutorial outlines a step-by-step process, beginning with Docker installation, followed by setting up kubeadm, kubelet, and kubectl, and concluding with constructing the K8s cluster. Moreover, it demonstrates how to deploy OpenAirInterface (OAI) core network, and link and utilize UERANSIM (gNB and User Equipment (UE)). 
@@ -82,7 +81,7 @@ git clone https://github.com/AIDY-F2N/OAI-UERANSIM.git
 6. Open a terminal inside the folder "OAI-UERANSIM/OAI+UERANSIM", and run the following commands to deploy the OAI core:
 ```bash[language=bash]
 helm dependency update oai-5g-core/oai-5g-basic
-helm install basic oai-5g-core/oai-5g-basic/ -n oai
+helm install 5gc oai-5g-core/oai-5g-basic/ -n oai
 ```
 The two commands you provided are related to the Helm package manager and are used to manage and deploy Helm charts onto a Kubernetes cluster. 
 After this, run this command to check if the core is deployed: 
@@ -91,7 +90,7 @@ kubectl get pods -n oai
 ```
 
 <div align="center">
-    <img src="figures/3.png" alt="AIDY-F2N">
+    <img src="figures/5gc.png" alt="AIDY-F2N">
 </div>
 
 # OAI core script using setpodnet-scheduler
@@ -161,7 +160,7 @@ You can add your own constraints based on your specific network requirements and
 8. Open a terminal inside the folder "OAI-UERANSIM/OAI+UERANSIM", and run the following commands to deploy the OAI core:
 ```bash[language=bash]
 helm dependency update oai-5g-core-setpodnet/oai-5g-basic
-helm install basic oai-5g-core-setpodnet/oai-5g-basic/ -n oai
+helm install 5gc oai-5g-core-setpodnet/oai-5g-basic/ -n oai
 ```
 The two commands you provided are related to the Helm package manager and are used to manage and deploy Helm charts onto a Kubernetes cluster. 
 After this, run this command to check if the core is deployed: 
@@ -170,45 +169,27 @@ kubectl get pods -n oai
 ```
 
 <div align="center">
-    <img src="figures/3.png" alt="AIDY-F2N">
+    <img src="figures/5gc.png" alt="AIDY-F2N">
 </div>
 
 # UERANSIM
 
 
-UERANSIM stands for User Equipment (UE) Radio Access Network (RAN) Simulator. It is an open-source software tool developed by the OpenAirInterface (OAI) community. UERANSIM simulates the behavior of a 5G RAN, specifically the functions of a UE and the radio access network. UERANSIM allows users to emulate the behavior of 5G UEs, including mobility, radio resource management, connection establishment, and data transfer. It provides a realistic environment for testing and evaluating the performance of 5G networks and applications. In the following steps, we clone UERANSIM for the git repository.
+UERANSIM stands for User Equipment (UE) Radio Access Network (RAN) Simulator. It is an open-source software tool developed by the OpenAirInterface (OAI) community. UERANSIM simulates the behavior of a 5G RAN, specifically the functions of a UE and the radio access network. UERANSIM allows users to emulate the behavior of 5G UEs, including mobility, radio resource management, connection establishment, and data transfer. It provides a realistic environment for testing and evaluating the performance of 5G networks and applications.
 
 
 
 
-1.  Inside the "OAI-UERANSIM/OAI+UERANSIM" folder, download UERANSIM v3.2.6 (https://github.com/aligungr/UERANSIM/releases):
+1.  Launch a gNB with release name "ueransim-gnb"
+
 ```bash[language=bash]
-wget https://github.com/aligungr/UERANSIM/archive/refs/tags/v3.2.6.tar.gz
-tar -xvzf v3.2.6.tar.gz
-mv  UERANSIM-3.2.6/ UERANSIM
-rm v3.2.6.tar.gz
-cd UERANSIM/
+helm install ueransim-gnb ueransim-5g-ran/ueransim-gnb/ -n oai
 ```
 
-2. Install UERANSIM v3.2.6 following this link : https://github.com/aligungr/UERANSIM/wiki/Installation. Pay attention to do it in the "OAI-UERANSIM/OAI+UERANSIM/UERANSIM" folder.
-
-
-3. Go back to the folder of "OAI+UERANSIM" and update the UERANSIM files configuration using the following command (be sure that all pods of the core network are deployed, 180 seconds in average):
-
+check pod name and logs: 
 ```bash[language=bash]
-python3 update_UERANSIM.py
-```
-
-If you face some problem, you may need to install net-tools, the collection of base networking utilities for Linux, using the following command: 
-```bash[language=bash]
-sudo apt-get install net-tools
-```
-
-If the core is ok, you get "Core is ok"
-
-4. Open another terminal inside the folder "OAI-UERANSIM/OAI+UERANSIM" and run the following command to run the UERANSIM gnb: 
-```bash[language=bash]
-./UERANSIM/build/nr-gnb -c UERANSIM/build/OAI-gnb.yaml
+kubectl get pods -n oai | grep gnb
+kubectl logs -n oai ueransim-gnb-74cdb9b849-4rnmk
 ```
 
 <div align="center">
@@ -216,42 +197,42 @@ If the core is ok, you get "Core is ok"
 </div>
 
 
-5. Open another terminal inside the folder "OAI-UERANSIM/OAI+UERANSIM" and run the following command the first user equipment (UE1) to the GNB: 
+2. Launch a UE (same thing apply for ue2 or ue3, if you want to have more you need to copy the helm chart and modify the IMSI, chart name, or you could in the ueransim-gnb helm chart launch multiple ues with it)
+
 ```bash[language=bash]
-sudo ./UERANSIM/build/nr-ue -c UERANSIM/build/OAI-ue.yaml -i imsi-001010000000101
+helm install ueransim-ue1 ueransim-5g-ran/ueransim-ue1/ -n oai
 ```
-6. Open another terminal inside the folder "OAI-UERANSIM/OAI+UERANSIM" and run the following command the second user equipment (UE2) to the GNB: 
+check pod name and logs: 
 ```bash[language=bash]
-sudo ./UERANSIM/build/nr-ue -c UERANSIM/build/OAI-ue.yaml -i imsi-001010000000102
+kubectl get pods -n oai | grep ue
+kubectl logs -n oai ueransim-gnb-74cdb9b849-4rnmk
 ```
-7. Open another terminal inside the folder "OAI-UERANSIM/OAI+UERANSIM" and run the following command the third user equipment (UE3) to the GNB: 
-```bash[language=bash]
-sudo ./UERANSIM/build/nr-ue -c UERANSIM/build/OAI-ue.yaml -i imsi-001010000000103
-```
+
 
 <div align="center">
     <img src="figures/ue.png" alt="AIDY-F2N">
 </div>
 
 
-The gnb terminal becomes: 
+The gnb logs becomes: 
 
 <div align="center">
     <img src="figures/gnb2.png" alt="AIDY-F2N">
 </div>
 
+The cluster will contain:
 
-8. Open another terminal, and run the following command to perform some traffic test with a ping test (for UE1, put uesimtun1 for UE2 and uesimtun2 for UE3):
+<div align="center">
+    <img src="figures/5gc_gnb_ues.png" alt="AIDY-F2N">
+</div>
+
+3. Run the following command to perform some traffic test with a ping test:
 ```bash[language=bash]
-ping -c 3 -I uesimtun0 google.com
+kubectl exec -it -n oai ueransim-ue3-ueransim-ues-6d6c959c5b-xnsph -- ping -c 3 -I uesimtun0 google.com
 ```
 <div align="center">
     <img src="figures/ping.png" alt="AIDY-F2N">
 </div>
-
-
-
-
  
 
 # Setup Prometheus Monitoring
