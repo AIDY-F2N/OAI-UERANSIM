@@ -1,0 +1,51 @@
+iperf3: error - unable to send control message: Bad file descriptor
+command terminated with exit code 1
+iperf3: error - unable to send control message: Broken pipe
+ KBytes       
+[  5]  51.00-52.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  52.00-53.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  53.00-54.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  54.00-55.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  55.00-56.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  56.00-57.00  sec  0.00 Bytes  0.00 bits/sec    1   1.32 KBytes       
+[  5]  57.00-58.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  58.00-59.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  59.00-60.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-60.00  sec  52.7 MBytes  7.36 Mbits/sec  288             sender
+[  5]   0.00-60.00  sec  0.00 Bytes  0.00 bits/sec                  receiver
+command terminated with exit code 1
+iperf3: error - unable to send control message: Broken pipe
+/sec   54   1.32 KBytes       
+[  5]  50.00-51.00  sec  0.00 Bytes  0.00 bits/sec    1   1.32 KBytes       
+[  5]  51.00-52.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  52.00-53.00  sec  0.00 Bytes  0.00 bits/sec    1   1.32 KBytes       
+[  5]  53.00-54.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  54.00-55.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  55.00-56.00  sec  0.00 Bytes  0.00 bits/sec    1   1.32 KBytes       
+[  5]  56.00-57.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  57.00-58.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  58.00-59.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  59.00-60.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-60.00  sec   207 MBytes  28.9 Mbits/sec  2855             sender
+[  5]   0.00-60.00  sec  0.00 Bytes  0.00 bits/sec                  receiver
+command terminated with exit code 1
+iperf3: error - unable to send control message: Broken pipe
+.32 KBytes       
+[  5]  51.00-52.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  52.00-53.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  53.00-54.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  54.00-55.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  55.00-56.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  56.00-57.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  57.00-58.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+[  5]  58.00-59.00  sec  0.00 Bytes  0.00 bits/sec    1   1.32 KBytes       
+[  5]  59.00-60.00  sec  0.00 Bytes  0.00 bits/sec    0   1.32 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-60.00  sec  26.3 MBytes  3.67 Mbits/sec  301             sender
+[  5]   0.00-60.00  sec  0.00 Bytes  0.00 bits/sec                  receiver
+command terminated with exit code 1
