@@ -438,18 +438,25 @@ helm uninstall -n oai 5gc ueransim-gnb
 ```
 
 
-# Beyond the Basics: Network Slicing and Collaboration 
+# Beyond the Basics: Network Slicing and Collaboration
 
-For a more advanced **network slicing platform** and additional functionalities using **Docker Compose** or **Kubernetes with Helm Charts**, which replicate the architecture shown in the figure below, feel free to contact us:  
+For a more advanced and **fully open-source network slicing platform**, explore our GitHub repository [**NexSlice**](https://github.com/AIDY-F2N/NexSlice.git), which includes:
 
-- **Massinissa AIT ABA** – massinissa.ait-aba@davidson.fr  
-- **Yasser BRAHMI** – abdenour-yasser.brahmi@telecom-sudparis.eu
+- Complete deployment instructions using **Kubernetes** and **Helm Charts**
+- Core slicing with **SST-based differentiation**
+- Integration of **UERANSIM**, disaggregated **OAI RAN**, and real-time monitoring
+- The architecture shown below is fully reproducible using the steps provided in the repository’s README
 
-  <div align="center">
-    <img src="figures/slicing.png" alt="Slicing">
+<div align="center">
+  <img src="figures/slicing.png" alt="NexSlice Architecture" width="80%">
 </div>
 
-We’ll be happy to discuss and provide more details! 
+For questions, collaboration, or more details, feel free to reach out:  
+- **Massinissa AIT ABA** – massinissa.ait-aba@davidson.fr  
+- **Yasser BRAHMI** – abdenour-yasser.brahmi@telecom-sudparis.eu  
+
+We’d be happy to connect and share more!
+
 
 
 
