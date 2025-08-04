@@ -39,15 +39,15 @@ for i in $(seq 0 $((NUM_UES - 1))); do
       ((ATTEMPT++))
       PORT=$((PORT + 1))
     else
-      echo "✅ UE $i iPerf3 test complete."
+      echo "UE $i iPerf3 test complete."
       break
     fi
   done
 
   if [ $ATTEMPT -gt $RETRIES ]; then
-    echo "⚠️ UE $i failed to connect after $RETRIES attempts."
+    echo "UE $i failed to connect after $RETRIES attempts."
   fi
 
 done
 
-echo "✅ All iPerf3 tests done. Results saved to text_files/iperf3_results.txt"
+echo "All iPerf3 tests done. Results saved to text_files/iperf3_results.txt"

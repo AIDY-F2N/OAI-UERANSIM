@@ -1,7 +1,7 @@
 # OpenAirInterface 5G Core Network Deployment on a Kubernetes cluster and Testing with UERANSIM and Iperf3 for traffic generation
 
 <div align="center">
-    <img src="figures/1_IconsAll_Hori.png" alt="AIDY-F2N">
+    <img src="figures/aidyf2n.png" alt="AIDY-F2N">
 </div>
 
 ## Description
@@ -393,10 +393,6 @@ This will create two pods: one containing the ueransim-gnb, and the other hostin
 ```bash[language=bash]
 kubectl get pods -n oai | grep ueransim
 ```
-
-<div align="center">
-    <img src="figures/ues_2way.png" alt="AIDY-F2N">
-</div>
 
 You can verify the deployment either by checking the logs of ueransim-gnb or by accessing the UE pod to view the interfaces from uesimtun0 to uesimtun<number_of_UEs-1>. Each should have an IP address and be able to ping:
 
