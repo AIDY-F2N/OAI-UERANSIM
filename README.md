@@ -21,9 +21,9 @@ Please note that this tutorial focuses on the Linux Ubuntu 64-bit operating syst
 The tutorial video is available on youtube: https://www.youtube.com/playlist?list=PLu0ii58C1Y3vNpRMZwYCsb17PvyF-i4WU
 ## Contributors
 
-- Massinissa AIT ABA, massinissa.ait-aba@davidson.fr
+- Massinissa AIT ABA, massinissa.ait_aba@telecom-sudparis.eu
 - Yasser BRAHMI, abdenour-yasser.brahmi@telecom-sudparis.eu
-- Ali AL KHANSA, ali.al_khansa@telecom-sudparis.eu
+- Ali AL KHANSA
 
 ## Table of Contents
 
