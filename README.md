@@ -448,7 +448,7 @@ For a more advanced and **fully open-source network slicing platform**, explore 
 </div>
 
 For questions, collaboration, or more details, feel free to reach out:  
-- **Massinissa AIT ABA** – massinissa.ait-aba@davidson.fr  
+- **Massinissa AIT ABA** – massinissa.ait_aba@telecom-sudparis.eu  
 - **Yasser BRAHMI** – abdenour-yasser.brahmi@telecom-sudparis.eu  
 
 We’d be happy to connect and share more!
